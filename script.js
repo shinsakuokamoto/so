@@ -128,22 +128,30 @@ async function renderDemo() {
     .forEach(d => {
       const el = document.createElement("div");
       el.className = "link-item";
-      el.innerHTML = `<a href="${d.link}">● ${d.title}</a>`;
+      el.innerHTML = `<a href="demo/${d.id}.html">● ${d.title}</a>`;
       container.appendChild(el);
     });
 }
 
 // ===== about =====
-if (!d.text) {
-  const spacer = document.createElement("div");
-  spacer.style.height = "12px";
-  container.appendChild(spacer);
-  return;
-}
+async function renderAbout() {
+  const data = await loadSheet("about");
+  const container = document.getElementById("about-list");
 
-const el = document.createElement("div");
-el.innerHTML = d.text;
-container.appendChild(el);
+  data.forEach(d => {
+
+    if (!d.text) {
+      const spacer = document.createElement("div");
+      spacer.style.height = "12px";
+      container.appendChild(spacer);
+      return;
+    }
+
+    const el = document.createElement("div");
+    el.innerHTML = d.text;
+    container.appendChild(el);
+  });
+}
 
 // ===== link =====
 async function renderLinks() {
