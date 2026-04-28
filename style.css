@@ -63,7 +63,7 @@ a {
 
 /* ● */
 .text-item::before {
-  content: "●";
+  content: "⚫ ";
 }
 
 /* 開閉 */
