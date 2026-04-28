@@ -17,7 +17,7 @@ document.querySelectorAll(".menu-title.has-plus").forEach(title => {
 });
 
 // ===== スプレッドシート設定 =====
-const SHEET_ID = "/1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
+const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
 const BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 
 // ===== CSVパース（安定版） =====
