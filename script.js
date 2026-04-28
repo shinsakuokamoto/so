@@ -1,4 +1,4 @@
-// ===== 既存：メニュー開閉 =====
+// ===== メニュー開閉 =====
 document.querySelectorAll(".menu-title.has-plus").forEach(title => {
   title.addEventListener("click", () => {
     const block = title.parentElement;
@@ -16,30 +16,37 @@ document.querySelectorAll(".menu-title.has-plus").forEach(title => {
   });
 });
 
-// ===== スプレッドシート読み込み =====
-
-// ★ここにあなたのスプシIDを入れる
-const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
-
-// CSV取得URL
+// ===== スプレッドシート設定 =====
+const SHEET_ID = "ここにスプシID";
 const BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 
-// 共通 fetch
+// ===== CSVパース（安定版） =====
+function parseCSV(str) {
+  const rows = str.trim().split("\n");
+
+  const headers = rows[0]
+    .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+    .map(h => h.replace(/"/g, "").trim());
+
+  return rows.slice(1).map(row => {
+    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
+    let obj = {};
+    headers.forEach((h, i) => {
+      let val = cols[i] || "";
+      val = val.replace(/^"|"$/g, "").trim();
+      obj[h] = val;
+    });
+
+    return obj;
+  });
+}
+
+// ===== 共通取得 =====
 async function loadSheet(name) {
   const res = await fetch(BASE + name);
   const text = await res.text();
   return parseCSV(text);
-}
-
-// CSV → 配列
-function parseCSV(str) {
-  const rows = str.trim().split("\n").map(r => r.split(","));
-  const headers = rows[0];
-  return rows.slice(1).map(row => {
-    let obj = {};
-    headers.forEach((h, i) => obj[h.trim()] = row[i]);
-    return obj;
-  });
 }
 
 // ===== project =====
@@ -66,12 +73,13 @@ async function renderText() {
     .filter(d => d.visible === "TRUE")
     .forEach(d => {
 
-      // 外部 or 個別HTML
+      // 外部リンク or 別HTML
       if (d.link) {
         const el = document.createElement("div");
         el.className = "text-item";
         el.innerHTML = `<a href="${d.link}" target="_blank">${d.title}</a>`;
         container.appendChild(el);
+
       } else {
         // 開閉型
         const item = document.createElement("div");
@@ -80,18 +88,29 @@ async function renderText() {
 
         const detail = document.createElement("div");
         detail.className = "text-detail";
+
+        let publicationHTML = "";
+        if (d.publication_url) {
+          publicationHTML = `<a href="${d.publication_url}" target="_blank">${d.publication_name || "link"}</a>`;
+        }
+
         detail.innerHTML = `
           <div><span>type:</span> ${d.type || ""}</div>
           <div><span>date:</span> ${d.date || ""}</div>
-          <div><span>publication:</span> 
-            <a href="${d.publication || "#"}" target="_blank">link</a>
-          </div>
+          <div><span>publication:</span> ${publicationHTML}</div>
         `;
+
+        // 本文
+        if (d.body) {
+          const body = document.createElement("div");
+          body.className = "text-body";
+          body.innerHTML = d.body.replace(/\n/g, "<br>");
+          detail.appendChild(body);
+        }
 
         container.appendChild(item);
         container.appendChild(detail);
 
-        // 開閉イベント再付与
         item.addEventListener("click", () => {
           detail.classList.toggle("open");
         });
@@ -121,7 +140,7 @@ async function renderAbout() {
 
   data.forEach(d => {
     const el = document.createElement("div");
-    el.innerHTML = d.text;
+    el.innerHTML = d.text || "";
     container.appendChild(el);
   });
 }
@@ -132,8 +151,15 @@ async function renderLinks() {
   const container = document.getElementById("link-list");
 
   data.forEach(d => {
+    let url = d.url || "";
+
+    // メール自動補正
+    if (url.includes("@") && !url.startsWith("http") && !url.startsWith("mailto:")) {
+      url = "mailto:" + url;
+    }
+
     const el = document.createElement("div");
-    el.innerHTML = `<a href="${d.url}" target="_blank">${d.name}</a>`;
+    el.innerHTML = `<a href="${url}" target="_blank">${d.name}</a>`;
     container.appendChild(el);
   });
 }

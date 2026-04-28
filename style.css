@@ -13,6 +13,7 @@ a {
   text-decoration: underline;
 }
 
+/* レイアウト */
 .wrapper {
   min-height: 100vh;
   display: flex;
@@ -23,6 +24,7 @@ a {
 
 .menu {
   width: 360px;
+  max-width: 100%;
 }
 
 .name {
@@ -33,6 +35,7 @@ a {
   margin-bottom: 12px;
 }
 
+/* タイトル（＋） */
 .menu-title,
 .text-item {
   display: flex;
@@ -58,10 +61,12 @@ a {
   transform: rotate(90deg);
 }
 
+/* ● */
 .text-item::before {
   content: "●";
 }
 
+/* 開閉 */
 .submenu {
   display: none;
   margin-left: 24px;
@@ -82,6 +87,7 @@ a {
   display: block;
 }
 
+/* text内の整形 */
 .text-detail div {
   display: flex;
   gap: 24px;
@@ -91,53 +97,54 @@ a {
   width: 110px;
 }
 
+.text-body {
+  margin-top: 8px;
+}
+
 .text-body p {
   margin: 0 0 12px 0;
   line-height: 1.6;
 }
 
+/* 改行制御（PC） */
 .text-item {
   white-space: nowrap;
 }
 
-/* about 内は改行させない */
 .menu-block .submenu div {
   white-space: nowrap;
 }
 
-/* text のタイトルリンクは下線なし */
+/* textリンクは下線なし */
 .text-item a {
   text-decoration: none;
 }
 
+/* 横スクロール防止 */
 html, body {
   overflow-x: hidden;
 }
 
+/* スマホ */
 @media (max-width: 600px) {
 
-  /* スマホでは改行OKにする */
   .menu-block .submenu div {
     white-space: normal;
   }
 
-  /* 長いタイトルもはみ出さない */
   .text-item,
   .menu-title {
     white-space: normal;
     word-break: break-word;
   }
-
 }
 
-/* project 個別ページの情報は途中改行させない */
+/* projectページ用 */
 .project-meta {
   white-space: nowrap;
-  word-break: normal;
-  overflow-wrap: normal;
 }
 
-/* Flickr画像表示 */
+/* Flickr */
 .flickr-image {
   margin-top: 80px;
 }
@@ -156,27 +163,5 @@ html, body {
 
   .flickr-image img {
     max-width: 100%;
-  }
-}
-
-/* 追加：自動生成リンクの見た目安定 */
-.link-item {
-  margin-bottom: 2px;
-}
-
-/* 追加：textの開閉ブロックの余白 */
-.text-item {
-  margin-bottom: 2px;
-}
-
-/* 追加：aboutの改行を維持（PCでも崩さない） */
-#about-list div {
-  white-space: nowrap;
-}
-
-/* 追加：スマホではaboutも折り返しOK */
-@media (max-width: 600px) {
-  #about-list div {
-    white-space: normal;
   }
 }
