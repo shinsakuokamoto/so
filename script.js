@@ -134,16 +134,16 @@ async function renderDemo() {
 }
 
 // ===== about =====
-async function renderAbout() {
-  const data = await loadSheet("about");
-  const container = document.getElementById("about-list");
-
-  data.forEach(d => {
-    const el = document.createElement("div");
-    el.innerHTML = d.text || "";
-    container.appendChild(el);
-  });
+if (!d.text) {
+  const spacer = document.createElement("div");
+  spacer.style.height = "12px";
+  container.appendChild(spacer);
+  return;
 }
+
+const el = document.createElement("div");
+el.innerHTML = d.text;
+container.appendChild(el);
 
 // ===== link =====
 async function renderLinks() {
