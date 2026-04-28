@@ -158,3 +158,25 @@ html, body {
     max-width: 100%;
   }
 }
+
+/* 追加：自動生成リンクの見た目安定 */
+.link-item {
+  margin-bottom: 2px;
+}
+
+/* 追加：textの開閉ブロックの余白 */
+.text-item {
+  margin-bottom: 2px;
+}
+
+/* 追加：aboutの改行を維持（PCでも崩さない） */
+#about-list div {
+  white-space: nowrap;
+}
+
+/* 追加：スマホではaboutも折り返しOK */
+@media (max-width: 600px) {
+  #about-list div {
+    white-space: normal;
+  }
+}
