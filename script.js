@@ -166,8 +166,14 @@ async function renderLinks() {
       url = "mailto:" + url;
     }
 
+    // 表示用テキスト
+    let display = d.name;
+    if (url.startsWith("mailto:")) {
+      display = url.replace("mailto:", "");
+    }
+
     const el = document.createElement("div");
-    el.innerHTML = `<a href="${url}" target="_blank">${d.name}</a>`;
+    el.innerHTML = `<a href="${url}" target="_blank">${display}</a>`;
     container.appendChild(el);
   });
 }
