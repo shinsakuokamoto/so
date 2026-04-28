@@ -19,7 +19,7 @@ document.querySelectorAll(".menu-title.has-plus").forEach(title => {
 // ===== スプレッドシート読み込み =====
 
 // ★ここにあなたのスプシIDを入れる
-const SHEET_ID = "ここにスプシID";
+const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
 
 // CSV取得URL
 const BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
