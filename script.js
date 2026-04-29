@@ -16,6 +16,61 @@ document.querySelectorAll(".menu-title.has-plus").forEach(title => {
   });
 });
 
+// ===== ランダム時計（拡張版） =====
+const zones = [
+  { tz: "Asia/Tokyo", label: "JST" },
+  { tz: "Asia/Seoul", label: "KST" },
+  { tz: "Asia/Shanghai", label: "CST" },
+  { tz: "Asia/Bangkok", label: "ICT" },
+  { tz: "Asia/Kolkata", label: "IST" },
+  { tz: "Asia/Dubai", label: "GST" },
+  { tz: "Europe/Athens", label: "EET" },
+  { tz: "Europe/Rome", label: "CET" },
+  { tz: "Europe/Paris", label: "CET" },
+  { tz: "Europe/Berlin", label: "CET" },
+  { tz: "Europe/London", label: "GMT" },
+  { tz: "Europe/Reykjavik", label: "GMT" },
+  { tz: "Africa/Cairo", label: "EET" },
+  { tz: "Africa/Nairobi", label: "EAT" },
+  { tz: "Africa/Lagos", label: "WAT" },
+  { tz: "America/New_York", label: "EST" },
+  { tz: "America/Chicago", label: "CST" },
+  { tz: "America/Denver", label: "MST" },
+  { tz: "America/Los_Angeles", label: "PST" },
+  { tz: "America/Mexico_City", label: "CST" },
+  { tz: "America/Sao_Paulo", label: "BRT" },
+  { tz: "America/Argentina/Buenos_Aires", label: "ART" },
+  { tz: "America/Santiago", label: "CLT" },
+  { tz: "Pacific/Honolulu", label: "HST" },
+  { tz: "Australia/Sydney", label: "AEST" },
+  { tz: "Australia/Perth", label: "AWST" },
+  { tz: "Pacific/Auckland", label: "NZST" },
+  { tz: "Pacific/Fiji", label: "FJT" },
+  { tz: "Asia/Ulaanbaatar", label: "ULAT" },
+  { tz: "Asia/Kathmandu", label: "NPT" },
+  { tz: "America/Anchorage", label: "AKST" },
+  { tz: "Atlantic/Azores", label: "AZOT" }
+];
+
+// ランダム選択
+const zone = zones[Math.floor(Math.random() * zones.length)];
+
+function updateClock() {
+  const now = new Date();
+
+  const time = now.toLocaleTimeString("en-GB", {
+    timeZone: zone.tz,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+
+  document.getElementById("clock").textContent = `${time} ${zone.label}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
 // ===== スプレッドシート設定 =====
 const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
 const BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
