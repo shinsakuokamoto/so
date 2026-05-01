@@ -167,8 +167,15 @@ async function renderText() {
         container.appendChild(detail);
 
         item.addEventListener("click", () => {
-          detail.classList.toggle("open");
-        });
+
+  // 他を全部閉じる
+  container.querySelectorAll(".text-detail").forEach(d => {
+    if (d !== detail) d.classList.remove("open");
+  });
+
+  // 自分を開閉
+  detail.classList.toggle("open");
+});
       }
     });
 }

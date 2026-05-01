@@ -50,6 +50,8 @@ a {
   text-align: center;
   margin-right: 6px;
   flex-shrink: 0;
+  font-size: 14px;
+  line-height: 1;
 }
 
 .menu-title.has-plus::before {
