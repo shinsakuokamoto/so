@@ -18,6 +18,9 @@
       </div>
       <div id="clock"></div>
     </div>
+    <div class="back">
+        <span id="back-btn">◀︎</span>
+    </div>
 
     <!-- コンテンツ -->
     <div id="detail"></div>
@@ -54,6 +57,13 @@ function parseCSV(str) {
     });
 
     return obj;
+  });
+}
+
+const backBtn = document.getElementById("back-btn");
+if (backBtn) {
+  backBtn.addEventListener("click", () => {
+    history.back();
   });
 }
 

@@ -192,3 +192,8 @@ html, body {
 .project-meta span {
   width: 110px;
 }
+
+.back {
+  margin-bottom: 16px;
+  cursor: pointer;
+}
