@@ -1,33 +1,3 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Work</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="wrapper">
-  <div class="menu">
-
-    <!-- 上部 -->
-    <div class="name-row">
-      <div class="name">
-        <a href="index.html">SO</a>
-      </div>
-      <div id="clock"></div>
-    </div>
-    <div class="back">
-        <span id="back-btn">◀︎</span>
-    </div>
-
-    <!-- コンテンツ -->
-    <div id="detail"></div>
-
-  </div>
-</div>
-
 <script>
 // ===== 設定 =====
 const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
@@ -38,7 +8,7 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 const type = params.get("type"); // project / demo
 
-// ===== CSVパース（安定版） =====
+// ===== CSVパース =====
 function parseCSV(str) {
   const rows = str.trim().split("\n");
 
@@ -60,13 +30,6 @@ function parseCSV(str) {
   });
 }
 
-const backBtn = document.getElementById("back-btn");
-if (backBtn) {
-  backBtn.addEventListener("click", () => {
-    history.back();
-  });
-}
-
 // ===== 読み込み =====
 async function loadSheet(name) {
   const res = await fetch(BASE + name);
@@ -76,8 +39,10 @@ async function loadSheet(name) {
 
 // ===== 描画 =====
 async function render() {
-  const data = await loadSheet(type);
   const container = document.getElementById("detail");
+
+  // ★ここが重要（typeで分岐）
+  const data = await loadSheet(type);
 
   const d = data.find(x => x.id === id);
 
@@ -86,37 +51,37 @@ async function render() {
     return;
   }
 
-  // ===== タイトル =====
+  // タイトル
   const title = document.createElement("div");
   title.textContent = d.title;
   container.appendChild(title);
 
-  // ===== 分岐 =====
+  // ===== project =====
   if (type === "project") {
 
-    // メタ情報
     const meta = document.createElement("div");
     meta.className = "project-meta";
     meta.innerHTML = `
-  <div><span>year:</span> ${d.year || ""}</div>
-  <div><span>location:</span> ${d.location || ""}</div>
-  <div><span>w:</span> ${d.w || ""}</div>
-`;
+      <div><span>year:</span> ${d.year || ""}</div>
+      <div><span>location:</span> ${d.location || ""}</div>
+      <div><span>w:</span> ${d.w || ""}</div>
+    `;
     container.appendChild(meta);
-
   }
 
+  // ===== demo =====
   if (type === "demo") {
 
-    // demoはシンプル（必要なら後で追加）
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = `${d.year || ""}`;
+    meta.innerHTML = `
+      <div><span>year:</span> ${d.year || ""}</div>
+      <div><span>type:</span> ${d.type || ""}</div>
+    `;
     container.appendChild(meta);
-
   }
 
-  // ===== 説明 =====
+  // 説明
   if (d.description) {
     const desc = document.createElement("div");
     desc.style.marginTop = "12px";
@@ -124,7 +89,7 @@ async function render() {
     container.appendChild(desc);
   }
 
-  // ===== 画像 =====
+  // 画像
   ["image_url_1","image_url_2","image_url_3","image_url_4","image_url_5"].forEach(key => {
     if (d[key]) {
       const img = document.createElement("img");
@@ -138,36 +103,9 @@ async function render() {
 
 render();
 
-
-// ===== ランダム時計（そのまま使える） =====
-const zones = [
-  { tz: "Asia/Tokyo", label: "JST" },
-  { tz: "Europe/Rome", label: "CET" },
-  { tz: "America/New_York", label: "EST" },
-  { tz: "Europe/London", label: "GMT" },
-  { tz: "Asia/Seoul", label: "KST" },
-  { tz: "Australia/Sydney", label: "AEST" }
-];
-
-const zone = zones[Math.floor(Math.random() * zones.length)];
-
-function updateClock() {
-  const now = new Date();
-
-  const time = now.toLocaleTimeString("en-GB", {
-    timeZone: zone.tz,
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit"
-  });
-
-  document.getElementById("clock").textContent = `${time} ${zone.label}`;
+// ===== 戻るボタン =====
+const backBtn = document.getElementById("back-btn");
+if (backBtn) {
+  backBtn.addEventListener("click", () => history.back());
 }
-
-setInterval(updateClock, 1000);
-updateClock();
-
 </script>
-
-</body>
-</html>
