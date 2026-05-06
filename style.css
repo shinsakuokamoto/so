@@ -183,3 +183,12 @@ html, body {
 #clock {
   font-size: 14px;
 }
+
+.project-meta div {
+  display: flex;
+  gap: 24px;
+}
+
+.project-meta span {
+  width: 110px;
+}

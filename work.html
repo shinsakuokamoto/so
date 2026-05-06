@@ -87,7 +87,11 @@ async function render() {
     // メタ情報
     const meta = document.createElement("div");
     meta.className = "project-meta";
-    meta.textContent = `${d.year || ""} / ${d.location || ""} / ${d.w || ""}`;
+    meta.innerHTML = `
+  <div><span>year:</span> ${d.year || ""}</div>
+  <div><span>location:</span> ${d.location || ""}</div>
+  <div><span>w:</span> ${d.w || ""}</div>
+`;
     container.appendChild(meta);
 
   }
