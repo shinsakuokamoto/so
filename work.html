@@ -42,7 +42,8 @@ async function render() {
   const container = document.getElementById("detail");
 
   // ★ここが重要（typeで分岐）
-  const data = await loadSheet(type);
+  const sheetName = (type === "project" || type === "demo") ? type : "project";
+  const data = await loadSheet(sheetName);
 
   const d = data.find(x => x.id === id);
 
@@ -62,6 +63,7 @@ async function render() {
     const meta = document.createElement("div");
     meta.className = "project-meta";
     meta.innerHTML = `
+      <div><span>type:</span> ${d.type || ""}</div>
       <div><span>year:</span> ${d.year || ""}</div>
       <div><span>location:</span> ${d.location || ""}</div>
       <div><span>w:</span> ${d.w || ""}</div>
@@ -75,8 +77,10 @@ async function render() {
     const meta = document.createElement("div");
     meta.className = "project-meta";
     meta.innerHTML = `
-      <div><span>year:</span> ${d.year || ""}</div>
       <div><span>type:</span> ${d.type || ""}</div>
+      <div><span>location:</span> ${d.year || ""}</div>
+      <div><span>type:</span> ${d.location || ""}</div>
+      <div><span>w:</span> ${d.w || ""}</div>
     `;
     container.appendChild(meta);
   }
