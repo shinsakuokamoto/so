@@ -114,7 +114,7 @@ async function renderProjects() {
     .forEach(d => {
       const el = document.createElement("div");
       el.className = "link-item";
-      el.innerHTML = `<a href="projects/${d.id}.html">● ${d.title}</a>`;
+      el.innerHTML = `<a href="work.html?type=project&id=${d.id}">● ${d.title}</a>`;
       container.appendChild(el);
     });
 }
@@ -190,7 +190,7 @@ async function renderDemo() {
     .forEach(d => {
       const el = document.createElement("div");
       el.className = "link-item";
-      el.innerHTML = `<a href="demo/${d.id}.html">● ${d.title}</a>`;
+      el.innerHTML = `<a href="work.html?type=demo&id=${d.id}">● ${d.title}</a>`;
       container.appendChild(el);
     });
 }
