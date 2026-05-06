@@ -109,14 +109,17 @@ async function renderProjects() {
   const data = await loadSheet("project");
   const container = document.getElementById("project-list");
 
-  data
-    .filter(d => d.visible === "TRUE")
-    .forEach(d => {
-      const el = document.createElement("div");
-      el.className = "link-item";
-      el.innerHTML = `<a href="work.html?type=project&id=${d.id}">● ${d.title}</a>`;
-      container.appendChild(el);
-    });
+  container.innerHTML = "";
+
+  data.forEach(d => {
+    if (d.visible !== "TRUE") return;
+
+    const el = document.createElement("div");
+    el.className = "link-item";
+    el.innerHTML = `<a href="work.html?type=project&id=${d.id}">● ${d.title}</a>`;
+
+    container.appendChild(el);
+  });
 }
 
 // ===== text =====
@@ -185,14 +188,17 @@ async function renderDemo() {
   const data = await loadSheet("demo");
   const container = document.getElementById("demo-list");
 
-  data
-    .filter(d => d.visible === "TRUE")
-    .forEach(d => {
-      const el = document.createElement("div");
-      el.className = "link-item";
-      el.innerHTML = `<a href="work.html?type=demo&id=${d.id}">● ${d.title}</a>`;
-      container.appendChild(el);
-    });
+  container.innerHTML = "";
+
+  data.forEach(d => {
+    if (d.visible !== "TRUE") return;
+
+    const el = document.createElement("div");
+    el.className = "link-item";
+    el.innerHTML = `<a href="work.html?type=demo&id=${d.id}">● ${d.title}</a>`;
+
+    container.appendChild(el);
+  });
 }
 
 // ===== about =====
