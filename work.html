@@ -1,14 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SO - work</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="menu">
+
+    <div class="name-row">
+      <div class="name">
+        <a href="./index.html">SO</a>
+      </div>
+      <div id="clock"></div>
+    </div>
+
+    <div id="back-btn">◀</div>
+
+    <div id="detail"></div>
+
+  </div>
+</div>
+
 <script>
-// ===== 設定 =====
+// ===== 時計 =====
+const zones = [
+  { tz: "Asia/Tokyo", label: "JST" },
+  { tz: "Europe/London", label: "GMT" },
+  { tz: "America/New_York", label: "EST" },
+  { tz: "Europe/Paris", label: "CET" },
+  { tz: "Australia/Sydney", label: "AEST" }
+];
+const zone = zones[Math.floor(Math.random() * zones.length)];
+
+function updateClock() {
+  const now = new Date();
+  const time = now.toLocaleTimeString("en-GB", {
+    timeZone: zone.tz,
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit"
+  });
+  document.getElementById("clock").textContent = time + " " + zone.label;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+
+// ===== スプレッドシート設定 =====
 const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
 const BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 
-// ===== URL =====
+// ===== URL取得 =====
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 const type = params.get("type");
 
-// ===== CSV =====
+// ===== CSVパース =====
 function parseCSV(str) {
   const rows = str.trim().split("\n");
 
@@ -30,6 +82,7 @@ function parseCSV(str) {
   });
 }
 
+// ===== データ取得 =====
 async function loadSheet(name) {
   const res = await fetch(BASE + name);
   const text = await res.text();
@@ -85,8 +138,8 @@ async function render() {
   // 説明
   if (d.description) {
     const desc = document.createElement("div");
-    desc.style.marginTop = "12px";
     desc.innerHTML = d.description.replace(/\n/g, "<br>");
+    desc.style.marginTop = "12px";
     container.appendChild(desc);
   }
 
@@ -95,8 +148,6 @@ async function render() {
     if (d[key]) {
       const img = document.createElement("img");
       img.src = d[key];
-      img.style.marginTop = "16px";
-      img.style.maxWidth = "100%";
       container.appendChild(img);
     }
   });
@@ -105,8 +156,8 @@ async function render() {
 render();
 
 // ===== 戻る =====
-const backBtn = document.getElementById("back-btn");
-if (backBtn) {
-  backBtn.addEventListener("click", () => history.back());
-}
+document.getElementById("back-btn").onclick = () => history.back();
 </script>
+
+</body>
+</html>
