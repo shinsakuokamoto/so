@@ -3,12 +3,12 @@
 const SHEET_ID = "1uakXSK0EOAc7HQjgjsNMQHtrXoozHGk1khORkhg3Ig0";
 const BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
 
-// ===== URL取得 =====
+// ===== URL =====
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
-const type = params.get("type"); // project / demo
+const type = params.get("type");
 
-// ===== CSVパース =====
+// ===== CSV =====
 function parseCSV(str) {
   const rows = str.trim().split("\n");
 
@@ -30,7 +30,6 @@ function parseCSV(str) {
   });
 }
 
-// ===== 読み込み =====
 async function loadSheet(name) {
   const res = await fetch(BASE + name);
   const text = await res.text();
@@ -40,9 +39,9 @@ async function loadSheet(name) {
 // ===== 描画 =====
 async function render() {
   const container = document.getElementById("detail");
+  container.innerHTML = "";
 
-  // ★ここが重要（typeで分岐）
-  const sheetName = (type === "project" || type === "demo") ? type : "project";
+  const sheetName = (type === "demo") ? "demo" : "project";
   const data = await loadSheet(sheetName);
 
   const d = data.find(x => x.id === id);
@@ -59,7 +58,6 @@ async function render() {
 
   // ===== project =====
   if (type === "project") {
-
     const meta = document.createElement("div");
     meta.className = "project-meta";
     meta.innerHTML = `
@@ -73,13 +71,12 @@ async function render() {
 
   // ===== demo =====
   if (type === "demo") {
-
     const meta = document.createElement("div");
     meta.className = "project-meta";
     meta.innerHTML = `
       <div><span>type:</span> ${d.type || ""}</div>
-      <div><span>location:</span> ${d.year || ""}</div>
-      <div><span>type:</span> ${d.location || ""}</div>
+      <div><span>year:</span> ${d.year || ""}</div>
+      <div><span>location:</span> ${d.location || ""}</div>
       <div><span>w:</span> ${d.w || ""}</div>
     `;
     container.appendChild(meta);
@@ -94,7 +91,7 @@ async function render() {
   }
 
   // 画像
-  ["image_url_1","image_url_2","image_url_3","image_url_4","image_url_5"].forEach(key => {
+  ["image_url_1","image_url_2","image_url_3","image_url_4"].forEach(key => {
     if (d[key]) {
       const img = document.createElement("img");
       img.src = d[key];
@@ -107,7 +104,7 @@ async function render() {
 
 render();
 
-// ===== 戻るボタン =====
+// ===== 戻る =====
 const backBtn = document.getElementById("back-btn");
 if (backBtn) {
   backBtn.addEventListener("click", () => history.back());
